@@ -9,87 +9,74 @@
 <title>Calculator Financiar</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0A0F1E;
-  --surface: #111827;
-  --surface2: #1a2235;
-  --border: rgba(255,255,255,0.07);
-  --accent: #3BFFA0;
-  --accent2: #FFD166;
-  --accent3: #FF6B6B;
-  --text: #F0F4FF;
-  --muted: rgba(240,244,255,0.45);
-  --card: rgba(255,255,255,0.04);
-}
+:root { --bg:#0A0F1E; --surface:#111827; --surface2:#1a2235; --border:rgba(255,255,255,0.07); --accent:#3BFFA0; --accent2:#FFD166; --text:#F0F4FF; --muted:rgba(240,244,255,0.45); --card:rgba(255,255,255,0.04); }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; }
-.app { max-width: 430px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
-header { padding: 52px 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; }
-header h1 { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--text); line-height: 1.1; }
-header h1 span { color: var(--accent); font-style: italic; }
-.header-badge { font-size: 0.58rem; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); background: rgba(59,255,160,0.1); border: 1px solid rgba(59,255,160,0.3); padding: 4px 10px; border-radius: 20px; }
-.tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); }
-.tab { flex: 1; padding: 14px 6px; font-family: 'DM Mono', monospace; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-.content { flex: 1; padding: 16px; }
-.panel { display: none; }
-.panel.active { display: block; }
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 14px; }
-.card-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--text); margin-bottom: 16px; }
-.field { margin-bottom: 14px; }
-.field label { display: block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
-.field input, .field select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--text); outline: none; -webkit-appearance: none; }
-.field input:focus, .field select:focus { border-color: rgba(59,255,160,0.5); }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.input-prefix { position: relative; }
-.input-prefix span { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; pointer-events: none; }
-.input-prefix input { padding-left: 26px; }
-.input-suffix { position: relative; }
-.input-suffix span { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; pointer-events: none; }
-.input-suffix input { padding-right: 28px; }
-.toggle-row { display: flex; background: rgba(255,255,255,0.04); border-radius: 10px; padding: 3px; gap: 3px; margin-bottom: 14px; }
-.toggle-btn { flex: 1; padding: 9px; font-family: 'DM Mono', monospace; font-size: 0.65rem; text-transform: uppercase; background: none; border: none; color: var(--muted); cursor: pointer; border-radius: 8px; transition: all 0.2s; }
-.toggle-btn.active { background: var(--accent); color: #0A0F1E; font-weight: 600; }
-.calc-btn { width: 100%; background: linear-gradient(135deg, var(--accent) 0%, #00cc7a 100%); color: #0A0F1E; border: none; border-radius: 12px; padding: 16px; font-family: 'DM Mono', monospace; font-size: 0.85rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 4px; }
-.results-section { margin-top: 16px; }
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
-.stat-card.highlight { background: rgba(59,255,160,0.08); border-color: rgba(59,255,160,0.3); grid-column: span 2; }
-.stat-card.highlight2 { background: rgba(255,209,102,0.08); border-color: rgba(255,209,102,0.3); grid-column: span 2; }
-.stat-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
-.stat-val { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--accent); line-height: 1; }
-.stat-card.highlight2 .stat-val { color: var(--accent2); }
-.stat-sub { font-size: 0.62rem; color: var(--muted); margin-top: 4px; }
-.table-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); margin-top: 4px; }
-.table-header { background: var(--surface2); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
-.table-header span { font-family: 'DM Serif Display', serif; font-size: 0.95rem; }
-.table-toggle { font-size: 0.58rem; text-transform: uppercase; color: var(--accent); background: rgba(59,255,160,0.1); border: 1px solid rgba(59,255,160,0.2); border-radius: 20px; padding: 4px 10px; cursor: pointer; font-family: 'DM Mono', monospace; }
-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
-thead th { background: rgba(255,255,255,0.03); padding: 10px; text-align: right; font-size: 0.58rem; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
-thead th:first-child { text-align: left; }
-tbody td { padding: 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text); }
-tbody td:first-child { text-align: left; color: var(--muted); }
-tbody tr:last-child td { border-bottom: none; }
-.positive { color: var(--accent) !important; }
-.golden { color: var(--accent2) !important; }
-.section-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin: 20px 0 10px; }
-.drip-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-.drip-card { border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); }
-.drip-card.drip-on { background: rgba(59,255,160,0.07); border-color: rgba(59,255,160,0.3); }
-.drip-card.drip-off { background: rgba(255,209,102,0.07); border-color: rgba(255,209,102,0.3); }
-.drip-card .dc-label { font-size: 0.58rem; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.drip-card .dc-val { font-family: 'DM Serif Display', serif; font-size: 1.3rem; }
-.drip-on .dc-val { color: var(--accent); }
-.drip-off .dc-val { color: var(--accent2); }
-.drip-card .dc-sub { font-size: 0.6rem; color: var(--muted); margin-top: 4px; }
+body { font-family:'DM Mono',monospace; background:var(--bg); color:var(--text); min-height:100vh; }
+.app { max-width:430px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; }
+header { padding:52px 20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; }
+header h1 { font-family:'DM Serif Display',serif; font-size:1.9rem; color:var(--text); line-height:1.1; }
+header h1 span { color:var(--accent); font-style:italic; }
+.header-badge { font-size:0.58rem; letter-spacing:2px; text-transform:uppercase; color:var(--accent); background:rgba(59,255,160,0.1); border:1px solid rgba(59,255,160,0.3); padding:4px 10px; border-radius:20px; }
+.tabs { display:flex; background:var(--surface); border-bottom:1px solid var(--border); }
+.tab { flex:1; padding:14px 6px; font-family:'DM Mono',monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
+.tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.content { flex:1; padding:16px; }
+.panel { display:none; }
+.panel.active { display:block; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:14px; }
+.card-title { font-family:'DM Serif Display',serif; font-size:1.05rem; color:var(--text); margin-bottom:16px; }
+.field { margin-bottom:14px; }
+.field label { display:block; font-size:0.62rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin-bottom:6px; }
+.field input,.field select { width:100%; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-family:'DM Mono',monospace; font-size:1rem; color:var(--text); outline:none; -webkit-appearance:none; }
+.field input:focus,.field select:focus { border-color:rgba(59,255,160,0.5); }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.input-prefix { position:relative; }
+.input-prefix span { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:0.85rem; pointer-events:none; }
+.input-prefix input { padding-left:26px; }
+.input-suffix { position:relative; }
+.input-suffix span { position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:0.85rem; pointer-events:none; }
+.input-suffix input { padding-right:28px; }
+.toggle-row { display:flex; background:rgba(255,255,255,0.04); border-radius:10px; padding:3px; gap:3px; margin-bottom:14px; }
+.toggle-btn { flex:1; padding:9px; font-family:'DM Mono',monospace; font-size:0.65rem; text-transform:uppercase; background:none; border:none; color:var(--muted); cursor:pointer; border-radius:8px; transition:all 0.2s; }
+.toggle-btn.active { background:var(--accent); color:#0A0F1E; font-weight:600; }
+.calc-btn { width:100%; background:linear-gradient(135deg,var(--accent) 0%,#00cc7a 100%); color:#0A0F1E; border:none; border-radius:12px; padding:16px; font-family:'DM Mono',monospace; font-size:0.85rem; font-weight:500; letter-spacing:2px; text-transform:uppercase; cursor:pointer; margin-top:4px; }
+.results-section { margin-top:16px; }
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; }
+.stat-card.highlight { background:rgba(59,255,160,0.08); border-color:rgba(59,255,160,0.3); grid-column:span 2; }
+.stat-card.highlight2 { background:rgba(255,209,102,0.08); border-color:rgba(255,209,102,0.3); grid-column:span 2; }
+.stat-label { font-size:0.58rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin-bottom:6px; }
+.stat-val { font-family:'DM Serif Display',serif; font-size:1.4rem; color:var(--accent); line-height:1; }
+.stat-card.highlight2 .stat-val { color:var(--accent2); }
+.stat-sub { font-size:0.62rem; color:var(--muted); margin-top:4px; }
+.table-wrap { border-radius:14px; overflow:hidden; border:1px solid var(--border); margin-top:4px; }
+.table-header { background:var(--surface2); padding:12px 14px; display:flex; justify-content:space-between; align-items:center; }
+.table-header span { font-family:'DM Serif Display',serif; font-size:0.95rem; }
+.table-toggle { font-size:0.58rem; text-transform:uppercase; color:var(--accent); background:rgba(59,255,160,0.1); border:1px solid rgba(59,255,160,0.2); border-radius:20px; padding:4px 10px; cursor:pointer; font-family:'DM Mono',monospace; }
+table { width:100%; border-collapse:collapse; font-size:0.7rem; }
+thead th { background:rgba(255,255,255,0.03); padding:8px 6px; text-align:right; font-size:0.55rem; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+thead th:first-child { text-align:left; }
+tbody td { padding:8px 6px; text-align:right; border-bottom:1px solid rgba(255,255,255,0.03); color:var(--text); font-size:0.7rem; }
+tbody td:first-child { text-align:left; color:var(--muted); }
+tbody tr:last-child td { border-bottom:none; }
+.positive { color:var(--accent) !important; }
+.golden { color:var(--accent2) !important; }
+.section-label { font-size:0.6rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin:20px 0 10px; }
+.drip-compare { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.drip-card { border-radius:12px; padding:14px; text-align:center; border:1px solid var(--border); }
+.drip-card.drip-on { background:rgba(59,255,160,0.07); border-color:rgba(59,255,160,0.3); }
+.drip-card.drip-off { background:rgba(255,209,102,0.07); border-color:rgba(255,209,102,0.3); }
+.drip-card .dc-label { font-size:0.58rem; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.drip-card .dc-val { font-family:'DM Serif Display',serif; font-size:1.3rem; }
+.drip-on .dc-val { color:var(--accent); }
+.drip-off .dc-val { color:var(--accent2); }
+.drip-card .dc-sub { font-size:0.6rem; color:var(--muted); margin-top:4px; }
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div>
-    <h1>Calculator<br><span>Financiar</span></h1>
-  </div>
+  <div><h1>Calculator<br><span>Financiar</span></h1></div>
   <div class="header-badge">Pro</div>
 </header>
 <div class="tabs">
@@ -118,7 +105,7 @@ tbody tr:last-child td { border-bottom: none; }
       <p class="section-label">Evoluție An cu An</p>
       <div class="table-wrap">
         <div class="table-header"><span>Tabel Detaliat</span><button class="table-toggle" onclick="toggleCompoundView()">Lunar</button></div>
-        <div style="overflow-x:auto; max-height:360px; overflow-y:auto">
+        <div style="overflow-x:auto;max-height:360px;overflow-y:auto">
           <table><thead><tr><th>An</th><th>Depus</th><th>Dobândă</th><th>Sold</th><th>Real*</th></tr></thead><tbody id="compound-table-body"></tbody></table>
         </div>
       </div>
@@ -131,18 +118,18 @@ tbody tr:last-child td { border-bottom: none; }
         <div class="field"><label>Preț Acțiune</label><div class="input-prefix"><span>$</span><input type="number" id="dv-price" value="100" inputmode="decimal"></div></div>
         <div class="field"><label>Nr. Acțiuni</label><input type="number" id="dv-shares" value="100" inputmode="numeric"></div>
       </div>
-      <div class="field"><label>Randament Dividend</label><div class="input-suffix"><span>%</span><input type="number" id="dv-yield" value="5" inputmode="decimal"></div></div>
+      <div class="field"><label>Randament Dividend (Yield %)</label><div class="input-suffix"><span>%</span><input type="number" id="dv-yield" value="5" inputmode="decimal"></div></div>
       <div class="field-row">
         <div class="field"><label>Ani</label><input type="number" id="dv-years" value="10" inputmode="numeric"></div>
         <div class="field"><label>Frecvență</label><select id="dv-freq"><option value="12">Lunară</option><option value="4" selected>Trimestrială</option><option value="1">Anuală</option></select></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Creștere Div.</label><div class="input-suffix"><span>%</span><input type="number" id="dv-div-growth" value="5" inputmode="decimal"></div></div>
-        <div class="field"><label>Creștere Preț</label><div class="input-suffix"><span>%</span><input type="number" id="dv-price-growth" value="7" inputmode="decimal"></div></div>
+        <div class="field"><label>Creștere Div. Anual</label><div class="input-suffix"><span>%</span><input type="number" id="dv-div-growth" value="5" inputmode="decimal"></div></div>
+        <div class="field"><label>Creștere Preț Anual</label><div class="input-suffix"><span>%</span><input type="number" id="dv-price-growth" value="7" inputmode="decimal"></div></div>
       </div>
       <div class="field-row">
         <div class="field"><label>Contrib. Anuală</label><div class="input-prefix"><span>$</span><input type="number" id="dv-annual-contrib" value="0" inputmode="decimal"></div></div>
-        <div class="field"><label>Impozit Div.</label><div class="input-suffix"><span>%</span><input type="number" id="dv-tax" value="0" inputmode="decimal"></div></div>
+        <div class="field"><label>Impozit Dividend</label><div class="input-suffix"><span>%</span><input type="number" id="dv-tax" value="0" inputmode="decimal"></div></div>
       </div>
       <p class="section-label">Mod DRIP</p>
       <div class="toggle-row">
@@ -160,108 +147,138 @@ tbody tr:last-child td { border-bottom: none; }
 </div>
 <script>
 function showTab(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
   event.target.classList.add('active');
 }
 function fmtK(v) {
-  if (v >= 1000000) return '$' + (v/1000000).toFixed(2) + 'M';
-  if (v >= 1000) return '$' + (v/1000).toFixed(1) + 'K';
-  return '$' + v.toLocaleString('ro-RO', {minimumFractionDigits:2, maximumFractionDigits:2});
+  if(v>=1000000) return '$'+(v/1000000).toFixed(2)+'M';
+  if(v>=1000) return '$'+(v/1000).toFixed(1)+'K';
+  return '$'+v.toLocaleString('ro-RO',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
-let compoundData = [];
-let compoundViewMode = 'annual';
+let compoundData=[],compoundViewMode='annual';
 function toggleCompoundView() {
-  compoundViewMode = compoundViewMode === 'annual' ? 'monthly' : 'annual';
-  document.querySelector('.table-toggle').textContent = compoundViewMode === 'annual' ? 'Lunar' : 'Anual';
+  compoundViewMode=compoundViewMode==='annual'?'monthly':'annual';
+  document.querySelector('.table-toggle').textContent=compoundViewMode==='annual'?'Lunar':'Anual';
   renderCompoundTable();
 }
 function renderCompoundTable() {
-  const data = compoundViewMode === 'annual' ? compoundData.annual : compoundData.monthly;
-  document.getElementById('compound-table-body').innerHTML = data.map(r => `<tr><td>${r.label}</td><td>${fmtK(r.deposited)}</td><td class="positive">+${fmtK(r.interest)}</td><td>${fmtK(r.balance)}</td><td class="golden">${fmtK(r.real)}</td></tr>`).join('');
+  const data=compoundViewMode==='annual'?compoundData.annual:compoundData.monthly;
+  document.getElementById('compound-table-body').innerHTML=data.map(r=>`<tr><td>${r.label}</td><td>${fmtK(r.deposited)}</td><td class="positive">+${fmtK(r.interest)}</td><td>${fmtK(r.balance)}</td><td class="golden">${fmtK(r.real)}</td></tr>`).join('');
 }
 function calcCompound() {
-  const P = parseFloat(document.getElementById('ci-principal').value) || 0;
-  const r = parseFloat(document.getElementById('ci-rate').value) / 100 || 0;
-  const years = parseInt(document.getElementById('ci-years').value) || 0;
-  const n = parseInt(document.getElementById('ci-freq').value);
-  const contrib = parseFloat(document.getElementById('ci-contrib').value) || 0;
-  const cf = parseInt(document.getElementById('ci-contrib-freq').value);
-  const inf = parseFloat(document.getElementById('ci-inflation').value) / 100 || 0;
-  const monthlyContrib = cf === 0 ? 0 : cf === 12 ? contrib : cf === 4 ? contrib/3 : contrib/12;
-  let balance = P, totalDeposited = P;
-  const monthly = [], annual = [];
-  let month = 0;
-  for (let y = 1; y <= years; y++) {
-    for (let m = 1; m <= 12; m++) {
+  const P=parseFloat(document.getElementById('ci-principal').value)||0;
+  const r=parseFloat(document.getElementById('ci-rate').value)/100||0;
+  const years=parseInt(document.getElementById('ci-years').value)||0;
+  const n=parseInt(document.getElementById('ci-freq').value);
+  const contrib=parseFloat(document.getElementById('ci-contrib').value)||0;
+  const cf=parseInt(document.getElementById('ci-contrib-freq').value);
+  const inf=parseFloat(document.getElementById('ci-inflation').value)/100||0;
+  const monthlyContrib=cf===0?0:cf===12?contrib:cf===4?contrib/3:contrib/12;
+  let balance=P,totalDeposited=P;
+  const monthly=[],annual=[];
+  let month=0;
+  for(let y=1;y<=years;y++){
+    for(let m=1;m<=12;m++){
       month++;
-      balance = balance * (1 + r/n) ** (n/12);
-      balance += monthlyContrib;
-      totalDeposited += monthlyContrib;
-      monthly.push({label:`An ${y} L${m}`, deposited:totalDeposited, interest:balance-totalDeposited, balance, real:balance/Math.pow(1+inf,month/12)});
+      balance=balance*(1+r/n)**(n/12);
+      balance+=monthlyContrib;
+      totalDeposited+=monthlyContrib;
+      monthly.push({label:`An ${y} L${m}`,deposited:totalDeposited,interest:balance-totalDeposited,balance,real:balance/Math.pow(1+inf,month/12)});
     }
-    annual.push({label:`An ${y}`, deposited:totalDeposited, interest:balance-totalDeposited, balance, real:balance/Math.pow(1+inf,y)});
+    annual.push({label:`An ${y}`,deposited:totalDeposited,interest:balance-totalDeposited,balance,real:balance/Math.pow(1+inf,y)});
   }
-  compoundData = {annual, monthly};
-  const totalInterest = balance - totalDeposited;
-  const stats = [
-    {label:'Sold Final', val:fmtK(balance), cls:'highlight', sub:`după ${years} ani`},
-    {label:'Valoare Reală', val:fmtK(balance/Math.pow(1+inf,years)), cls:'highlight2', sub:`ajustat inflație ${(inf*100).toFixed(1)}%`},
-    {label:'Total Depus', val:fmtK(totalDeposited), cls:'', sub:''},
-    {label:'Dobândă Câștigată', val:fmtK(totalInterest), cls:'', sub:`${((totalInterest/totalDeposited)*100).toFixed(0)}% profit`},
-    {label:'Multiplicare', val:`x${(balance/P).toFixed(1)}`, cls:'', sub:'față de capital inițial'},
-    {label:'Contrib. Lunară', val:fmtK(monthlyContrib), cls:'', sub:'depus lunar'}
+  compoundData={annual,monthly};
+  const totalInterest=balance-totalDeposited;
+  const stats=[
+    {label:'Sold Final',val:fmtK(balance),cls:'highlight',sub:`după ${years} ani`},
+    {label:'Valoare Reală',val:fmtK(balance/Math.pow(1+inf,years)),cls:'highlight2',sub:`ajustat inflație ${(inf*100).toFixed(1)}%`},
+    {label:'Total Depus',val:fmtK(totalDeposited),cls:'',sub:''},
+    {label:'Dobândă Câștigată',val:fmtK(totalInterest),cls:'',sub:`${((totalInterest/totalDeposited)*100).toFixed(0)}% profit`},
+    {label:'Multiplicare',val:`x${(balance/P).toFixed(1)}`,cls:'',sub:'față de capital inițial'},
+    {label:'Contrib. Lunară',val:fmtK(monthlyContrib),cls:'',sub:'depus lunar'}
   ];
-  document.getElementById('compound-stats').innerHTML = stats.map(s => `<div class="stat-card ${s.cls}"><div class="stat-label">${s.label}</div><div class="stat-val">${s.val}</div>${s.sub?`<div class="stat-sub">${s.sub}</div>`:''}</div>`).join('');
-  document.getElementById('compound-results').style.display = 'block';
+  document.getElementById('compound-stats').innerHTML=stats.map(s=>`<div class="stat-card ${s.cls}"><div class="stat-label">${s.label}</div><div class="stat-val">${s.val}</div>${s.sub?`<div class="stat-sub">${s.sub}</div>`:''}</div>`).join('');
+  document.getElementById('compound-results').style.display='block';
   renderCompoundTable();
 }
-let dripMode = true;
-function setDrip(mode) {
-  dripMode = mode;
-  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-  if (mode === true) document.getElementById('drip-on-btn').classList.add('active');
-  else if (mode === false) document.getElementById('drip-off-btn').classList.add('active');
+let dripMode=true;
+function setDrip(mode){
+  dripMode=mode;
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  if(mode===true) document.getElementById('drip-on-btn').classList.add('active');
+  else if(mode===false) document.getElementById('drip-off-btn').classList.add('active');
   else document.getElementById('drip-both-btn').classList.add('active');
 }
-function calcDividend() {
-  const price = parseFloat(document.getElementById('dv-price').value) || 0;
-  const shares = parseFloat(document.getElementById('dv-shares').value) || 0;
-  const yieldPct = parseFloat(document.getElementById('dv-yield').value) / 100 || 0;
-  const years = parseInt(document.getElementById('dv-years').value) || 0;
-  const freq = parseInt(document.getElementById('dv-freq').value);
-  const divGrowth = parseFloat(document.getElementById('dv-div-growth').value) / 100 || 0;
-  const priceGrowth = parseFloat(document.getElementById('dv-price-growth').value) / 100 || 0;
-  const annualContrib = parseFloat(document.getElementById('dv-annual-contrib').value) || 0;
-  const tax = parseFloat(document.getElementById('dv-tax').value) / 100 || 0;
-  function simulate(withDrip) {
-    let cs = shares, cp = price, cdps = price * yieldPct, tdi = 0, ti = price * shares, cda = 0;
-    const rows = [];
-    for (let y = 1; y <= years; y++) {
-      if (y > 1 && annualContrib > 0) { cs += annualContrib / cp; ti += annualContrib; }
-      let ydi = 0;
-      for (let q = 0; q < freq; q++) {
-        const dp = cs * (cdps / freq) * (1 - tax);
-        ydi += dp;
-        if (withDrip) cs += dp / cp; else cda += dp;
+function calcDividend(){
+  const price=parseFloat(document.getElementById('dv-price').value)||0;
+  const sharesInit=parseFloat(document.getElementById('dv-shares').value)||0;
+  const yieldPct=parseFloat(document.getElementById('dv-yield').value)/100||0;
+  const years=parseInt(document.getElementById('dv-years').value)||0;
+  const freq=parseInt(document.getElementById('dv-freq').value);
+  const divGrowth=parseFloat(document.getElementById('dv-div-growth').value)/100||0;
+  const priceGrowth=parseFloat(document.getElementById('dv-price-growth').value)/100||0;
+  const annualContrib=parseFloat(document.getElementById('dv-annual-contrib').value)||0;
+  const tax=parseFloat(document.getElementById('dv-tax').value)/100||0;
+  function simulate(withDrip){
+    let cs=sharesInit,cp=price,cdps=price*yieldPct,tdi=0,ti=price*sharesInit,cda=0;
+    // Adauga contributia din ANUL 1
+    if(annualContrib>0){ cs+=annualContrib/cp; ti+=annualContrib; }
+    const rows=[];
+    for(let y=1;y<=years;y++){
+      if(y>1&&annualContrib>0){ cs+=annualContrib/cp; ti+=annualContrib; }
+      let ydi=0;
+      for(let q=0;q<freq;q++){
+        const dp=cs*(cdps/freq)*(1-tax);
+        ydi+=dp;
+        if(withDrip) cs+=dp/cp; else cda+=dp;
       }
-      tdi += ydi;
-      cp *= (1 + priceGrowth);
-      cdps *= (1 + divGrowth);
-      rows.push({year:y, shares:cs.toFixed(2), divPerShare:cdps.toFixed(3), yearDiv:ydi, portfolioVal:cs*cp, cashDiv:cda});
+      tdi+=ydi;
+      const portfolioVal=cs*cp;
+      const divAnualFinal=cs*cdps*(1-tax);
+      cp*=(1+priceGrowth);
+      cdps*=(1+divGrowth);
+      rows.push({year:y,shares:cs.toFixed(2),divPerShare:cdps.toFixed(3),yearDiv:ydi,divAnualFinal,portfolioVal,cashDiv:cda,priceEnd:cp});
     }
-    return {rows, finalPortfolio:cs*cp, totalDivIncome:tdi, totalInvested:ti, finalShares:cs};
+    return{rows,finalPortfolio:cs*cp,totalDivIncome:tdi,totalInvested:ti,finalShares:cs,finalDivAnual:cs*cdps*(1-tax)};
   }
-  const drip = simulate(true), noDrip = simulate(false);
-  const area = document.getElementById('dividend-stats-area');
-  if (dripMode === 'both') {
-    area.innerHTML = `<div class="drip-compare"><div class="drip-card drip-on"><div class="dc-label">Cu DRIP</div><div class="dc-val">${fmtK(drip.finalPortfolio)}</div><div class="dc-sub">Portofoliu final</div></div><div class="drip-card drip-off"><div class="dc-label">Fără DRIP</div><div class="dc-val">${fmtK(noDrip.finalPortfolio+noDrip.totalDivIncome)}</div><div class="dc-sub">Portofoliu + Cash</div></div></div><div class="stat-grid"><div class="stat-card highlight"><div class="stat-label">Diferență DRIP vs fără</div><div class="stat-val">${fmtK(drip.finalPortfolio-(noDrip.finalPortfolio+noDrip.totalDivIncome))}</div></div></div><p class="section-label">Comparație An cu An</p><div class="table-wrap"><div style="overflow-x:auto;max-height:360px;overflow-y:auto"><table><thead><tr><th>An</th><th>DRIP</th><th>No-DRIP</th><th>Div/An</th></tr></thead><tbody>${drip.rows.map((r,i)=>`<tr><td>${r.year}</td><td class="positive">${fmtK(r.portfolioVal)}</td><td class="golden">${fmtK(noDrip.rows[i].portfolioVal+noDrip.rows[i].cashDiv)}</td><td>${fmtK(r.yearDiv)}</td></tr>`).join('')}</tbody></table></div></div>`;
+  const drip=simulate(true),noDrip=simulate(false);
+  const area=document.getElementById('dividend-stats-area');
+  if(dripMode==='both'){
+    area.innerHTML=`
+    <div class="drip-compare">
+      <div class="drip-card drip-on"><div class="dc-label">Cu DRIP</div><div class="dc-val">${fmtK(drip.finalPortfolio)}</div><div class="dc-sub">Portofoliu final</div></div>
+      <div class="drip-card drip-off"><div class="dc-label">Fără DRIP</div><div class="dc-val">${fmtK(noDrip.finalPortfolio+noDrip.totalDivIncome)}</div><div class="dc-sub">Portofoliu+Cash</div></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card highlight"><div class="stat-label">Diferență DRIP vs Fără</div><div class="stat-val">${fmtK(drip.finalPortfolio-(noDrip.finalPortfolio+noDrip.totalDivIncome))}</div></div>
+      <div class="stat-card"><div class="stat-label">Div. Anual Final DRIP</div><div class="stat-val" style="font-size:1.1rem">${fmtK(drip.finalDivAnual)}</div></div>
+      <div class="stat-card"><div class="stat-label">Div. Anual Final No-DRIP</div><div class="stat-val" style="font-size:1.1rem;color:var(--accent2)">${fmtK(noDrip.finalDivAnual)}</div></div>
+    </div>
+    <p class="section-label">Comparație An cu An</p>
+    <div class="table-wrap"><div style="overflow-x:auto;max-height:360px;overflow-y:auto">
+      <table><thead><tr><th>An</th><th>Acțiuni</th><th>Div/An</th><th>DRIP Port.</th><th>No-DRIP</th></tr></thead>
+      <tbody>${drip.rows.map((r,i)=>`<tr><td>${r.year}</td><td>${r.shares}</td><td class="golden">${fmtK(r.yearDiv)}</td><td class="positive">${fmtK(r.portfolioVal)}</td><td>${fmtK(noDrip.rows[i].portfolioVal+noDrip.rows[i].cashDiv)}</td></tr>`).join('')}</tbody></table>
+    </div></div>`;
   } else {
-    const data = dripMode ? drip : noDrip;
-    area.innerHTML = `<div class="stat-grid"><div class="stat-card highlight"><div class="stat-label">Portofoliu Final</div><div class="stat-val">${fmtK(data.finalPortfolio)}</div></div><div class="stat-card"><div class="stat-label">Total Dividende</div><div class="stat-val" style="font-size:1.1rem">${fmtK(data.totalDivIncome)}</div></div><div class="stat-card"><div class="stat-label">Total Investit</div><div class="stat-val" style="font-size:1.1rem">${fmtK(data.totalInvested)}</div></div><div class="stat-card"><div class="stat-label">Acțiuni Finale</div><div class="stat-val" style="font-size:1.1rem">${parseFloat(data.finalShares).toFixed(2)}</div></div></div><p class="section-label">Tabel</p><div class="table-wrap"><div style="overflow-x:auto;max-height:360px;overflow-y:auto"><table><thead><tr><th>An</th><th>Acțiuni</th><th>Div/Acț</th><th>Div/An</th><th>Portofoliu</th></tr></thead><tbody>${data.rows.map(r=>`<tr><td>${r.year}</td><td>${r.shares}</td><td class="golden">$${r.divPerShare}</td><td class="positive">${fmtK(r.yearDiv)}</td><td>${fmtK(r.portfolioVal)}</td></tr>`).join('')}</tbody></table></div></div>`;
+    const data=dripMode?drip:noDrip;
+    area.innerHTML=`
+    <div class="stat-grid">
+      <div class="stat-card highlight"><div class="stat-label">Portofoliu Final</div><div class="stat-val">${fmtK(data.finalPortfolio)}</div><div class="stat-sub">după ${years} ani</div></div>
+      <div class="stat-card highlight2"><div class="stat-label">Dividend Anual Final</div><div class="stat-val">${fmtK(data.finalDivAnual)}</div><div class="stat-sub">venit pasiv/an la final</div></div>
+      <div class="stat-card"><div class="stat-label">Total Dividende Încasate</div><div class="stat-val" style="font-size:1.1rem">${fmtK(data.totalDivIncome)}</div></div>
+      <div class="stat-card"><div class="stat-label">Total Investit</div><div class="stat-val" style="font-size:1.1rem">${fmtK(data.totalInvested)}</div></div>
+      <div class="stat-card"><div class="stat-label">Acțiuni Finale</div><div class="stat-val" style="font-size:1.1rem">${parseFloat(data.finalShares).toFixed(2)}</div></div>
+      <div class="stat-card"><div class="stat-label">Profit Total</div><div class="stat-val" style="font-size:1.1rem">${fmtK(data.finalPortfolio-data.totalInvested+data.totalDivIncome)}</div></div>
+    </div>
+    <p class="section-label">Tabel An cu An</p>
+    <div class="table-wrap"><div style="overflow-x:auto;max-height:360px;overflow-y:auto">
+      <table><thead><tr><th>An</th><th>Acțiuni</th><th>Div/An</th><th>Div.Anual</th><th>Portofoliu</th></tr></thead>
+      <tbody>${data.rows.map(r=>`<tr><td>${r.year}</td><td>${r.shares}</td><td class="golden">${fmtK(r.yearDiv)}</td><td class="positive">${fmtK(r.divAnualFinal)}</td><td>${fmtK(r.portfolioVal)}</td></tr>`).join('')}</tbody></table>
+    </div></div>`;
   }
-  document.getElementById('dividend-results').style.display = 'block';
+  document.getElementById('dividend-results').style.display='block';
 }
 </script>
 </body>
